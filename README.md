@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/license-Proprietary-blue.svg)](LICENSE)
 
 > **Project Qublis** (QBL) brings together quantum‐inspired numbers, probabilistic routing, entangled overlays, AI‐driven consensus, quantum identity, and conscious agents into one seamless Rust workspace.  
-> Universe 2-74136 runs **QBL v2.0**, merging 10 months of future optimizations from branch `future/63147` back into `main`.
+> Universe 2-74136 runs **QBL v2.0**, merging 10 from branch `63147` back into `main`.
 
 ---
 
