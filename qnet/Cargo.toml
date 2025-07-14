@@ -1,0 +1,55 @@
+[package]
+name = "qublis-qnet"
+version = "2.0.0"
+edition = "2021"
+authors = ["Nic Neil <nic@qublis.org>"]
+description = "Probabilistic routing, relay & teleportation core for Qublis v2.0"
+license = "Proprietary"
+repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+readme = "README.md"
+keywords = ["routing", "teleport", "quantum", "qublis"]
+categories = ["network-programming", "quantum-computing"]
+
+[lib]
+name = "qublis_qnet"
+path = "src/lib.rs"
+
+[dependencies]
+# Quantum Number System integration
+qublis-qnum = { workspace = true }
+
+# Serialization / configuration
+serde = { version = "1.0", features = ["derive"] }
+
+# Logging facade
+log = "0.4"
+
+# Error types
+thiserror = "1.0"
+
+# Asynchronous runtime (for relay, teleport servers)
+tokio = { version = "1.28", features = ["net", "sync", "time"] }
+
+# HashMap / HashSet
+hashbrown = "0.12"
+
+[features]
+# Default enables QNum support only
+default = ["qnum"]
+
+# Enable QNS integration (QNum-based routing probabilities)
+qnum = ["qublis-qnum"]
+
+# Enable Teleportation overlay (requires `teleport_core.rs`)
+teleport = []
+
+# Enable collection of routing metrics
+metrics = []
+
+[dev-dependencies]
+serde_json = "1.0"
+criterion = { version = "0.3", optional = true }
+
+[package.metadata]
+# Proprietary workspace packages are not published to crates.io
+publish = false
