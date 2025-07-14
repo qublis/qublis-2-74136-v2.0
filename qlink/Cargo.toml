@@ -1,0 +1,46 @@
+[package]
+name = "qublis-qlink"
+version = "2.0.0"
+edition = "2021"
+authors = ["Nic NicNac Neil <nic@qublis.org>"]
+description = "Quantum identity, ethics lattice, conscious consent and mutation engine for Qublis v2.0"
+license = "Proprietary"
+repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+readme = "README.md"
+keywords = ["quantum", "identity", "ethics", "consent", "qublis"]
+categories = ["cryptography", "privacy", "quantum-computing"]
+
+[lib]
+name = "qublis_qlink"
+path = "src/lib.rs"
+
+[dependencies]
+# Quantum Number System for Qid & QNum types
+qublis-qnum = { workspace = true }
+
+# Serialization & configuration
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.6"
+
+# Error definitions
+thiserror = "1.0"
+
+# Logging facade
+log = "0.4"
+
+[features]
+# Enable core QNum integration
+qnum = ["qublis-qnum"]
+# Enable metrics collection
+metrics = []
+
+# Default includes QNum support
+default = ["qnum"]
+
+[dev-dependencies]
+serde_json = "1.0"
+criterion = { version = "0.3", optional = true }
+
+[package.metadata]
+# Proprietary workspace crate; do not publish to crates.io
+publish = false
