@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  cargo:
+    name: Build, Lint & Test
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Install the Rust toolchain as pinned in rust-toolchain.toml
+      - name: Set up Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: clippy, rustfmt
+
+      # 3. Cache Cargo registry and build artifacts
+      - name: Cache Cargo registry & build
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      # 4. Check formatting
+      - name: Rustfmt check
+        run: cargo fmt --all -- --check
+
+      # 5. Run Clippy lints
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+
+      # 6. Build all crates
+      - name: Build workspace
+        run: cargo build --workspace --release --all-features
+
+      # 7. Run tests
+      - name: Run tests
+        run: cargo test --workspace --all-features -- --nocapture
