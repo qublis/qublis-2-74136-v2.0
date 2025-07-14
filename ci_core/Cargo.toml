@@ -1,0 +1,58 @@
+[package]
+name = "qublis-ci_core"
+version = "2.0.0"
+edition = "2021"
+authors = ["Nic Neil <nic@qublis.org>"]
+description = "Conscious AI core: Morphic AI, Moral Regulator, Collective Sync for Qublis v2.0"
+license = "Proprietary"
+repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+readme = "README.md"
+keywords = ["ai", "consciousness", "quantum", "ethics", "qublis"]
+categories = ["artificial-intelligence", "quantum-computing"]
+
+[lib]
+name = "qublis_ci_core"
+path = "src/lib.rs"
+
+[dependencies]
+# Quantum Number System for QNum & Qid types
+qublis-qnum = { workspace = true }
+
+# Quantum Identity & Consent layers
+qublis-qlink = { workspace = true }
+
+# Async runtime for any background tasks
+tokio = { version = "1.28", features = ["rt", "sync", "time"] }
+
+# Configuration / serialization
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.6"
+
+# Error definitions
+thiserror = "1.0"
+
+# Logging
+log = "0.4"
+
+[features]
+# Default includes QNum and QLink integration
+default = ["qnum", "qlink"]
+
+# Enable QNum support (core)
+qnum = ["qublis-qnum"]
+
+# Enable integration with QLink identity & consent
+qlink = ["qublis-qlink"]
+
+# Enable metrics collection
+metrics = []
+
+[dev-dependencies]
+# JSON testing and fixtures
+serde_json = "1.0"
+# Benchmarking (optional)
+criterion = { version = "0.3", optional = true }
+
+[package.metadata]
+# Proprietary workspace crate; do not publish to crates.io
+publish = false
