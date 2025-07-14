@@ -1,0 +1,55 @@
+[package]
+name = "qublis-sim"
+version = "2.0.0"
+edition = "2021"
+authors = ["Nic NicNac Neil <nic@qublis.org>"]
+description = "Simulation suite for Qublis v2.0: TPS, latency, multidimensional and NeuroFlux network analysis"
+license = "Proprietary"
+repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+readme = "README.md"
+keywords = ["simulation", "tps", "latency", "network", "neuroflux", "qublis"]
+categories = ["simulation", "network-programming", "data-visualization"]
+
+[lib]
+name = "qublis_sim"
+path = "src/lib.rs"
+
+[dependencies]
+# Core Qublis crates
+qublis-qnum   = { workspace = true }
+qublis-qnet   = { workspace = true }
+qublis-qnetx  = { workspace = true }
+qublis-qmesh  = { workspace = true }
+qublis-qlink  = { workspace = true }
+qublis-ci_core = { workspace = true }
+
+# Async runtime & CLI
+tokio         = { version = "1.28", features = ["rt", "macros", "time", "net"] }
+clap          = { version = "4.1", features = ["derive"] }
+
+# Serialization & config
+serde         = { version = "1.0", features = ["derive"] }
+serde_json    = "1.0"
+toml          = "0.6"
+
+# Randomness & utilities
+rand          = "0.8"
+plotters      = { version = "0.3", optional = true }
+csv           = "1.2"
+
+[features]
+# Default includes the Tokio runtime
+default = ["tokio-runtime"]
+tokio-runtime = ["tokio"]
+
+# Enable plotting support
+plotting = ["plotters"]
+
+[dev-dependencies]
+criterion     = { version = "0.3", optional = true }
+tempfile      = "3.5"
+assert_cmd    = "2.0"
+
+[package.metadata]
+# Proprietary crate; not published to crates.io
+publish = false
