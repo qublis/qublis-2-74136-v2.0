@@ -1,0 +1,52 @@
+[package]
+name = "qublis-deploy"
+version = "2.0.0"
+edition = "2021"
+authors = ["Nic Neil <nic@qublis.org>"]
+description = "Deployment scripts, CI‐fork launcher, and QNetX node bootstrap for Qublis v2.0"
+license = "Proprietary"
+repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+readme = "README.md"
+keywords = ["deployment", "bootstrap", "cli", "qublis"]
+categories = ["command-line-utilities"]
+# This crate is proprietary and not published to crates.io
+publish = false
+
+[dependencies]
+# Core Qublis runtime and overlay crates
+qublis-runtime   = { workspace = true }
+qublis-qnet      = { workspace = true }
+qublis-qnetx     = { workspace = true }
+qublis-qlink     = { workspace = true }
+qublis-ci_core   = { workspace = true }
+
+# Async runtime for any async operations
+tokio            = { version = "1.28", features = ["rt-multi-thread", "macros", "fs"] }
+
+# Configuration parsing
+serde            = { version = "1.0", features = ["derive"] }
+serde_json       = "1.0"
+toml             = "0.6"
+
+# CLI argument parsing for launcher tools
+clap             = { version = "4.1", features = ["derive"] }
+
+# Error handling
+thiserror        = "1.0"
+
+[features]
+# No default features for deploy crate
+default = []
+
+[dev-dependencies]
+# Testing CLI tools
+assert_cmd       = "2.0"
+tempfile         = "3.5"
+
+[[bin]]
+name = "ci_fork_launcher"
+path = "src/ci_fork_launcher.rs"
+
+[[bin]]
+name = "qnetx_node_bootstrap"
+path = "src/qnetx_node_bootstrap.rs"
