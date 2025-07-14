@@ -1,0 +1,17 @@
+[toolchain]
+# Pin to Rust 1.69.0 for reproducible builds
+channel = "1.69.0"
+
+# Install minimal components: formatter, linter, and source for tooling
+profile = "minimal"
+components = [
+  "rustfmt",
+  "clippy",
+  "rust-src",
+  "llvm-tools-preview",
+]
+
+# Add the WebAssembly target for sim/wasm and qnum WASM builds
+targets = [
+  "wasm32-unknown-unknown",
+]
