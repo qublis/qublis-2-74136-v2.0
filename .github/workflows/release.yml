@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  release:
+    name: Publish Release v${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Check out code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # 2. Set up Rust
+      - name: Setup Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          components: clippy, rustfmt
+
+      # 3. Cache Cargo artifacts
+      - name: Cache Cargo registry & target
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      # 4. Verify formatting
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      # 5. Run Clippy
+      - name: Lint with Clippy
+        run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+
+      # 6. Run tests
+      - name: Run tests
+        run: cargo test --workspace --all-features -- --nocapture
+
+      # 7. Build all crates
+      - name: Build workspace
+        run: cargo build --workspace --release --all-features
+
+      # 8. Create GitHub Release
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: |
+            ## Qublis v${{ github.ref_name }}
+            **Universe 2-74136 — QBL v2.0**  
+            Merged 10 months of future optimizations from `future/63147`.  
+            See [CHANGELOG.md](CHANGELOG.md) for details.
+
+      # 9. Publish crates to crates.io
+      - name: Publish `qublis-qnum`
+        run: cargo publish --manifest-path qnum/Cargo.toml --token ${{ secrets.CARGO_TOKEN }}
+      - name: Publish `qublis-qnet`
+        run: cargo publish --manifest-path qnet/Cargo.toml --token ${{ secrets.CARGO_TOKEN }}
+      - name: Publish `qublis-qnetx`
+        run: cargo publish --manifest-path qnetx/Cargo.toml --token ${{ secrets.CARGO_TOKEN }}
+      - name: Publish `qublis-qmesh`
+        run: cargo publish --manifest-path qmesh/Cargo.toml --token ${{ secrets.CARGO_TOKEN }}
+      - name: Publish `qublis-qlink`
+        run: cargo publish --manifest-path qlink/Cargo.toml --token ${{ secrets.CARGO_TOKEN }}
+      - name: Publish `qublis-ci-core`
+        run: cargo publish --manifest-path ci_core/Cargo.toml --token ${{ secrets.CARGO_TOKEN }}
+
+      # 10. Post-release cleanup
+      - name: Notify success
+        run: echo "Qublis v${{ github.ref_name }} published successfully!"
