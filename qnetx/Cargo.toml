@@ -1,0 +1,60 @@
+[package]
+name = "qublis-qnetx"
+version = "2.0.0"
+edition = "2021"
+authors = ["Nic NicNac Neil <nic@qublis.org>"]
+description = "Entangled overlay mesh (QNetX) for Qublis v2.0"
+license = "Proprietary"
+repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+readme = "README.md"
+keywords = ["quantum", "mesh", "entanglement", "overlay", "qublis"]
+categories = ["network-programming", "quantum-computing"]
+
+[lib]
+name = "qublis_qnetx"
+path = "src/lib.rs"
+
+[dependencies]
+# Core Quantum Number System
+qublis-qnum = { workspace = true }
+
+# QNet integration for routing infrastructure
+qublis-qnet = { workspace = true }
+
+# Serialization / configuration
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.6"
+
+# Logging & metrics
+log = "0.4"
+thiserror = "1.0"
+
+# Async runtime for mesh handshake, connections
+tokio = { version = "1.28", features = ["net", "sync", "time"] }
+
+# Graph structures and algorithms
+petgraph = "0.6"
+
+[features]
+# Default enables QNum and QNet integration
+default = ["qnum", "qnet"]
+
+# Enable QNum superposition for channel IDs
+qnum = ["qublis-qnum"]
+
+# Enable QNet dependency for path discovery
+qnet = ["qublis-qnet"]
+
+# Enable advanced entanglement filtering & anomaly detection
+anomaly = []
+
+# Enable Prometheus metrics export
+metrics = []
+
+[dev-dependencies]
+serde_json = "1.0"
+criterion = { version = "0.3", optional = true }
+
+[package.metadata]
+# Proprietary; not published to crates.io
+publish = false
