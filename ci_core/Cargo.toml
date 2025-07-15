@@ -51,7 +51,7 @@ metrics = []
 # JSON testing and fixtures
 serde_json = "1.0"
 # Benchmarking (optional)
-criterion = { version = "0.3", optional = true }
+criterion = { version = "0.3"}
 
 [package.metadata]
 # Proprietary workspace crate; do not publish to crates.io
