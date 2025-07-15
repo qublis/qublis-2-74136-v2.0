@@ -100,7 +100,7 @@ deploy/
 ### Example: `ci_forks.toml`
 
 ```toml
-upstream_repo = "https://github.com/YourOrg/qublis-2-74136-v2.0.git"
+upstream_repo = "https://github.com/qublis/qublis-2-74136-v2.0.git"
 branch        = "main"
 forks         = 3
 output_dir    = "./ci_forks"
