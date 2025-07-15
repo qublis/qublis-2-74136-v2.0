@@ -16,7 +16,7 @@ mod tests {
     fn reexports_compile() {
         // Test CiForkConfig
         let cf = CiForkConfig {
-            upstream_repo: "https://github.com/YourOrg/qublis.git".into(),
+            upstream_repo: "https://github.com/qublis/qublis.git".into(),
             branch: "main".into(),
             forks: 2,
             output_dir: "./ci_forks".into(),
