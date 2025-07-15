@@ -2,10 +2,10 @@
 name = "qublis-qnum"
 version = "2.0.0"
 edition = "2021"
-authors = ["Nic Neil <nic@qublis.org>"]
+authors = ["Nic NicNac Neil <admin@qublis.com>"]
 description = "Quantum Number System (QNS) core types, gates, entanglement and measurement primitives for Qublis v2.0"
 license = "Proprietary"
-repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+repository = "https://github.com/qublis/qublis-2-74136-v2.0"
 readme = "README.md"
 keywords = ["quantum", "qnum", "superposition", "entanglement", "qublis"]
 categories = ["data-structures", "quantum-computing", "math"]
