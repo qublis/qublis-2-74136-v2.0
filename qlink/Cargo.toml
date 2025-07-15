@@ -2,10 +2,10 @@
 name = "qublis-qlink"
 version = "2.0.0"
 edition = "2021"
-authors = ["Nic NicNac Neil <nic@qublis.org>"]
+authors = ["Nic NicNac Neil <admin@qublis.com>"]
 description = "Quantum identity, ethics lattice, conscious consent and mutation engine for Qublis v2.0"
 license = "Proprietary"
-repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+repository = "https://github.com/qublis/qublis-2-74136-v2.0"
 readme = "README.md"
 keywords = ["quantum", "identity", "ethics", "consent", "qublis"]
 categories = ["cryptography", "privacy", "quantum-computing"]
