@@ -46,7 +46,7 @@ tokio-runtime = ["tokio"]
 plotting = ["plotters"]
 
 [dev-dependencies]
-criterion     = { version = "0.3", optional = true }
+criterion     = { version = "0.3"}
 tempfile      = "3.5"
 assert_cmd    = "2.0"
 
