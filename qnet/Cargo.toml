@@ -48,7 +48,7 @@ metrics = []
 
 [dev-dependencies]
 serde_json = "1.0"
-criterion = { version = "0.3", optional = true }
+criterion = { version = "0.3"}
 
 [package.metadata]
 # Proprietary workspace packages are not published to crates.io
