@@ -2,10 +2,10 @@
 name = "qublis-sim"
 version = "2.0.0"
 edition = "2021"
-authors = ["Nic NicNac Neil <nic@qublis.org>"]
+authors = ["Nic NicNac Neil <admin@qublis.com>"]
 description = "Simulation suite for Qublis v2.0: TPS, latency, multidimensional and NeuroFlux network analysis"
 license = "Proprietary"
-repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+repository = "https://github.com/qublis/qublis-2-74136-v2.0"
 readme = "README.md"
 keywords = ["simulation", "tps", "latency", "network", "neuroflux", "qublis"]
 categories = ["simulation", "network-programming", "data-visualization"]
