@@ -129,10 +129,10 @@ mod tests {
     #[test]
     fn parse_default_config() {
         let toml = r#"
-            upstream_repo = "https://github.com/YourOrg/qublis.git"
+            upstream_repo = "https://github.com/qublis/qublis.git"
         "#;
         let cfg: CiForkConfig = toml::from_str(toml).unwrap();
-        assert_eq!(cfg.upstream_repo, "https://github.com/YourOrg/qublis.git");
+        assert_eq!(cfg.upstream_repo, "https://github.com/qublis/qublis.git");
         assert_eq!(cfg.branch, "main");
         assert_eq!(cfg.forks, 1);
         assert_eq!(cfg.output_dir, "./ci_forks");
@@ -142,7 +142,7 @@ mod tests {
     #[test]
     fn parse_full_config() {
         let toml = r#"
-            upstream_repo = "git@github.com:YourOrg/qublis.git"
+            upstream_repo = "git@github.com:qublis/qublis.git"
             branch = "develop"
             forks = 3
             output_dir = "/tmp/forks"
