@@ -2,10 +2,10 @@
 name = "qublis-qmesh"
 version = "2.0.0"
 edition = "2021"
-authors = ["Nic Neil <nic@qublis.org>"]
+authors = ["Nic NicNac Neil <admin@qublis.com>"]
 description = "Entropic DAG, cognitive entropy, and retrochain tracking for Qublis v2.0"
 license = "Proprietary"
-repository = "https://github.com/YourOrg/qublis-2-74136-v2.0"
+repository = "https://github.com/qublis/qublis-2-74136-v2.0"
 readme = "README.md"
 keywords = ["quantum", "mesh", "entropic", "dag", "retrochain", "qublis"]
 categories = ["data-structures", "quantum-computing"]
