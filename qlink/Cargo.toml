@@ -16,7 +16,7 @@ path = "src/lib.rs"
 
 [dependencies]
 # Quantum Number System for Qid & QNum types
-qublis-qnum = { workspace = true }
+qublis-qnum = { workspace = true, optional = true }
 
 # Serialization & configuration
 serde = { version = "1.0", features = ["derive"] }
