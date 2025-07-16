@@ -24,7 +24,7 @@ qublis-qlink  = { workspace = true }
 qublis-ci_core = { workspace = true }
 
 # Async runtime & CLI
-tokio         = { version = "1.28", features = ["rt", "macros", "time", "net"] }
+tokio         = { version = "1.28", features = ["rt", "macros", "time", "net"], optional = true }
 clap          = { version = "4.1", features = ["derive"] }
 
 # Serialization & config
