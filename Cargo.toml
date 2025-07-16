@@ -19,3 +19,4 @@ exclude = [
 
 [workspace.dependencies]
 qublis-qnum = { path = "qnum" }
+qublis-qnet = { path = "qnet" }
