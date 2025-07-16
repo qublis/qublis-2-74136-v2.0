@@ -23,3 +23,6 @@ qublis-qnet = { path = "qnet" }
 qublis-qlink = { path = "qlink" }
 qublis-ci_core = { path = "ci_core" }
 qublis-qmesh = { path = "qmesh" }
+qublis-qnetx = { path = "qnetx" }
+qublis-sim = { path = "sim" }
+qublis-deploy = { path = "deploy" }
