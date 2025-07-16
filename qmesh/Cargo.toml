@@ -16,7 +16,7 @@ path = "src/lib.rs"
 
 [dependencies]
 # Quantum Number System integration
-qublis-qnum = { workspace = true }
+qublis-qnum = { workspace = true, optional = true }
 
 # Directed‐acyclic‐graph utilities
 petgraph = "0.6"
