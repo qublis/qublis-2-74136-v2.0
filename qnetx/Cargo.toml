@@ -16,10 +16,10 @@ path = "src/lib.rs"
 
 [dependencies]
 # Core Quantum Number System
-qublis-qnum = { workspace = true }
+qublis-qnum = { workspace = true, optional = true }
 
 # QNet integration for routing infrastructure
-qublis-qnet = { workspace = true }
+qublis-qnet = { workspace = true, optional = true }
 
 # Serialization / configuration
 serde = { version = "1.0", features = ["derive"] }
