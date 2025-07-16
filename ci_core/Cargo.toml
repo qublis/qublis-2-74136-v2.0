@@ -16,10 +16,10 @@ path = "src/lib.rs"
 
 [dependencies]
 # Quantum Number System for QNum & Qid types
-qublis-qnum = { workspace = true }
+qublis-qnum = { workspace = true, optional = true }
 
 # Quantum Identity & Consent layers
-qublis-qlink = { workspace = true }
+qublis-qlink = { workspace = true, optional = true }
 
 # Async runtime for any background tasks
 tokio = { version = "1.28", features = ["rt", "sync", "time"] }
