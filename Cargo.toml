@@ -10,12 +10,12 @@ members = [
     "deploy",
 ]
 
-[workspace.dependencies]
-qublis-qnum = { path = "qnum" }
-
 # Exclude non-crate directories
 exclude = [
     "docs/*",
     "examples/*",
     ".github/*",
 ]
+
+[workspace.dependencies]
+qublis-qnum = { path = "qnum" }
