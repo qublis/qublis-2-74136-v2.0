@@ -1,0 +1,29 @@
+# Rust / Cargo build artifacts
+/target/
+/**/target/
+
+# Generated binary
+/qublis-qnetx-node
+
+# Lock file (workspace-managed at root)
+/Cargo.lock
+
+# Logs
+*.log
+
+# Temporary / backup files
+*.tmp
+*.bak
+*~
+
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS Finder metadata
+.DS_Store
+
+# Windows thumbnail cache
+Thumbs.db
