@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "qublis-qnetx-node Configuration Schema",
+  "type": "object",
+  "properties": {
+    "node_name": {
+      "type": "string",
+      "description": "Human-readable name for this node instance"
+    },
+    "listen_addr": {
+      "type": "string",
+      "description": "Multiaddr to listen on for QNetX P2P connections"
+    },
+    "jsonrpc_addr": {
+      "type": "string",
+      "description": "Multiaddr to listen on for JSON-RPC (optional)"
+    },
+    "bootstrap_peers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Multiaddr of a bootstrap peer"
+      },
+      "description": "List of peers to connect to at startup"
+    },
+    "consensus": {
+      "type": "object",
+      "properties": {
+        "qmesh_config_path": {
+          "type": "string",
+          "description": "Path to the QMesh consensus TOML config"
+        },
+        "neuroflux_enabled": {
+          "type": "boolean",
+          "description": "Enable or disable the NeuroFlux RL tuner"
+        },
+        "neuroflux_config_path": {
+          "type": "string",
+          "description": "Path to the NeuroFlux RL config (if enabled)"
+        }
+      },
+      "required": ["qmesh_config_path", "neuroflux_enabled"],
+      "additionalProperties": false
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535,
+          "description": "TCP port for Prometheus metrics export"
+        },
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable or disable metrics endpoint"
+        }
+      },
+      "required": ["port", "enabled"],
+      "additionalProperties": false
+    },
+    "telemetry": {
+      "type": "object",
+      "properties": {
+        "prometheus_bind": {
+          "type": "string",
+          "description": "Bind address for Prometheus scrape endpoint"
+        }
+      },
+      "required": ["prometheus_bind"],
+      "additionalProperties": false
+    },
+    "logging": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "string",
+          "enum": ["trace", "debug", "info", "warn", "error"],
+          "description": "Minimum log level"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["plain", "json"],
+          "description": "Output format for logs"
+        }
+      },
+      "required": ["level", "format"],
+      "additionalProperties": false
+    },
+    "base_path": {
+      "type": "string",
+      "description": "Path to store node data (chain state, keys, keystore)"
+    },
+    "dev_mode": {
+      "type": "boolean",
+      "description": "Enable development mode (disables peer authentication, uses dev keys)"
+    }
+  },
+  "required": [
+    "node_name",
+    "listen_addr",
+    "bootstrap_peers",
+    "consensus",
+    "metrics",
+    "telemetry",
+    "logging",
+    "base_path",
+    "dev_mode"
+  ],
+  "additionalProperties": false
+}
