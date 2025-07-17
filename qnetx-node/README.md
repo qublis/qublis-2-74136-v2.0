@@ -1,7 +1,7 @@
 ````markdown
 # qublis-qnetx-node
 
-**Extended QNetX Validator Node Binary for Qublis v2.0 (Universe 2-74136)**
+**Extended QNetX Validator Node Binary for Qublis v2.0 (2-74136)**
 
 A standalone CLI application implementing the QNetX overlay validator node. Provides peer-to-peer networking, entropic DAG consensus (QMesh), NeuroFlux optimization, telemetry, and administrative commands.
 
