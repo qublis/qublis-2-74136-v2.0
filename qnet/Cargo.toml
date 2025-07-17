@@ -20,6 +20,7 @@ qublis-qnum = { workspace = true, optional = true }
 
 # Serialization / configuration
 serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"         
 
 # Logging facade
 log = "0.4"
@@ -32,6 +33,12 @@ tokio = { version = "1.28", features = ["net", "sync", "time"] }
 
 # HashMap / HashSet
 hashbrown = "0.12"
+
+# --- Added for your errors ---
+futures = "0.3"
+num-complex = "0.4"        
+toml = "0.8"
+# --- End added ---
 
 [features]
 # Default enables QNum support only
@@ -47,8 +54,8 @@ teleport = []
 metrics = []
 
 [dev-dependencies]
-serde_json = "1.0"
-criterion = { version = "0.3"}
+criterion = { version = "0.3" }
+# If serde_json is only used in tests/benches, you can keep it here and remove from above
 
 [package.metadata]
 # Proprietary workspace packages are not published to crates.io
