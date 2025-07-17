@@ -1,4 +1,4 @@
-//! Core runtime for Qublis v2.0 (Universe 2-74136).
+//! Core runtime for Qublis v2.0 (2-74136).
 //!
 //! This crate implements the blockchain runtime modules:
 //! - Consensus integration with NeuroFlux optimization  
