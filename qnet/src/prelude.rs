@@ -15,7 +15,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_prelu­de_reexports() {
+    fn test_prelude_reexports() {
         // Config
         let cfg: QNetConfig = QNetConfig::default();
         // Router
