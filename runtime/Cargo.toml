@@ -1,0 +1,27 @@
+[package]
+name        = "qublis-runtime"
+version     = "2.0.0"
+edition     = "2021"
+authors     = ["Nic NicNac Neil <admin@qublis.com>"]
+description = "Runtime modules for Qublis v2.0: consensus, entanglement loops, causal reflection, and WASM integration"
+repository  = "https://github.com/qublis/qublis-2-74136-v2.0"
+readme      = "../docs/architecture.md"
+license     = "Proprietary"
+publish     = false
+
+[dependencies]
+# Core quantum numeric primitives
+qublis-qnum   = { workspace = true }
+
+# Conscious‐AI core for NeuroFlux agent
+qublis-ci_core = { workspace = true }
+
+# Configuration parsing
+serde          = { version = "1.0", features = ["derive"] }
+toml           = "0.5"
+
+# Error handling
+thiserror      = "1.0"
+
+# Logging facade
+log            = "0.4"
