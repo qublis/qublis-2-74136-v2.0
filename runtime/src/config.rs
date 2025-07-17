@@ -1,4 +1,4 @@
-//! Runtime configuration loader for Qublis v2.0 (Universe 2-74136).
+//! Runtime configuration loader for Qublis v2.0 (2-74136).
 //!
 //! Defines `RuntimeConfig` and sub-configs for consensus, entanglement loop,
 //! causal reflector, WASM executor, and metrics. Supports TOML parsing with
