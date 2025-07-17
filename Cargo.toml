@@ -8,6 +8,7 @@ members = [
     "ci_core",
     "sim",
     "deploy",
+    "qnetx-node",
 ]
 
 # Exclude non-crate directories
@@ -27,3 +28,4 @@ qublis-qnetx = { path = "qnetx" }
 qublis-runtime = { path = "runtime" }
 qublis-sim = { path = "sim" }
 qublis-deploy = { path = "deploy" }
+qublis-qnetx-node = { path = "qnetx-node" }
