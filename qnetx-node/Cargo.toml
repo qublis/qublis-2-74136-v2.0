@@ -1,0 +1,29 @@
+[package]
+name        = "qublis-qnetx-node"
+version     = "2.0.0"
+edition     = "2021"
+authors     = ["Nic NicNac Neil <admin@qublis.com>"]
+description = "Extended QNetX validator node binary for Qublis v2.0 (Universe 2-74136)"
+license     = "Proprietary"
+repository  = "https://github.com/qublis/qublis-2-74136-v2.0"
+publish     = false
+
+[dependencies]
+# Command‐line interface
+clap         = { version = "4.1", features = ["derive"] }
+
+# Asynchronous runtime
+tokio        = { version = "1.28.0", features = ["full"] }
+
+# Configuration parsing
+serde        = { version = "1.0", features = ["derive"] }
+toml         = "0.5"
+
+# Logging
+log          = "0.4"
+env_logger   = "0.10"
+
+# Core Qublis crates from the workspace
+qublis-qnet     = { workspace = true }
+qublis-qnetx    = { workspace = true }
+qublis-runtime  = { workspace = true }
