@@ -1,0 +1,64 @@
+# Default configuration for qublis-qnetx-node
+# Located at: qnetx-node/config/default.toml
+
+# -------------------------------------------------------------------
+# Node identity and networking
+# -------------------------------------------------------------------
+# A human‐readable name for this node instance
+node_name       = "validator-1"
+
+# Multiaddr to listen on for QNetX P2P connections
+listen_addr     = "/ip4/0.0.0.0/tcp/30333"
+
+# Multiaddr to listen on for JSON-RPC (optional)
+jsonrpc_addr    = "/ip4/0.0.0.0/tcp/9944"
+
+# Bootstrap peers to connect to at startup (multiaddrs)
+bootstrap_peers = [
+  "/ip4/203.0.113.1/tcp/30333",
+  "/ip4/203.0.113.2/tcp/30333"
+]
+
+# -------------------------------------------------------------------
+# Consensus (QMesh + NeuroFlux)
+# -------------------------------------------------------------------
+[consensus]
+# Path to the QMesh consensus TOML config
+qmesh_config_path      = "../qmesh/config/default.toml"
+
+# Enable or disable the NeuroFlux reinforcement-learning tuner
+neuroflux_enabled      = true
+
+# Path to the NeuroFlux RL config (if neuroflux_enabled = true)
+neuroflux_config_path  = "../ci_core/config/neuroflux.toml"
+
+# -------------------------------------------------------------------
+# Metrics & Telemetry
+# -------------------------------------------------------------------
+[metrics]
+# TCP port for Prometheus metrics export
+port    = 9400
+# Enable or disable metrics endpoint
+enabled = true
+
+[telemetry]
+# Bind address for Prometheus scrape endpoint (alternate)
+prometheus_bind = "0.0.0.0:9300"
+
+# -------------------------------------------------------------------
+# Logging
+# -------------------------------------------------------------------
+[logging]
+# Minimum log level: trace, debug, info, warn, error
+level  = "info"
+# Output format: "plain" or "json"
+format = "json"
+
+# -------------------------------------------------------------------
+# Runtime options
+# -------------------------------------------------------------------
+# Path to store node data (chain state, keys, keystore)
+base_path = "/var/lib/qublis/qnetx-node"
+
+# Enable development mode (disables peer authentication, uses dev keys)
+dev_mode  = false
