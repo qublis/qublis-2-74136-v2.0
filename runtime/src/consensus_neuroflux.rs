@@ -1,4 +1,4 @@
-//! Consensus NeuroFlux integration for Qublis v2.0 (Universe 2-74136).
+//! Consensus NeuroFlux integration for Qublis v2.0 (2-74136).
 //!
 //! Embeds a NeuroFlux reinforcement‐learning agent into the QMesh consensus loop,
 //! enabling dynamic, real‐time tuning of consensus parameters based on observed
