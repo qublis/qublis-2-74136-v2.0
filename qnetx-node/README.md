@@ -36,7 +36,7 @@ A standalone CLI application implementing the QNetX overlay validator node. Prov
 
 ## Prerequisites
 
-- Rust **1.70.0** (toolchain via `rustup`)  
+- Rust **1.88.0** (toolchain via `rustup`)  
 - `wasm32-unknown-unknown` target (for QBLang contracts)  
 - Network ports:  
   - **30333** TCP for P2P  
