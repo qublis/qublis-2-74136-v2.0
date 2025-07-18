@@ -9,7 +9,7 @@ use num_complex::Complex;
 use rand::Rng;
 
 /// A multi‐digit quantum number: most-significant `Qid` first.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub struct QNum(pub Vec<Qid>);
 
 impl QNum {
