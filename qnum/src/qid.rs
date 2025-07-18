@@ -77,7 +77,7 @@ impl Qid {
     /// - Collapses `self.amps` so that only that basis has amplitude 1.
     pub fn measure(&mut self) -> u8 {
         // Build probability distribution
-        let probs: Vec<f64> = self.amps.iter().map(|c| c.norm_sqr()).collect();
+        let probs: Vec<f64> = self.amps.iter().map(|c| c.norm_sqr().0).collect();
         let dist = WeightedIndex::new(&probs)
             .expect("Probability weights must sum to > 0");
         let mut rng = rand::thread_rng();
