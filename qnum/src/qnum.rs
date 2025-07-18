@@ -7,9 +7,10 @@
 use crate::qid::Qid;
 use num_complex::Complex;
 use rand::Rng;
+use serde::{Serialize, Deserialize};
 
 /// A multi‐digit quantum number: most-significant `Qid` first.
-#[derive(Clone, Debug, Hash, Eq, PartialEq)]
+#[derive(Clone, Debug, Hash, Eq, PartialEq, Serialize, Deserialize)]
 pub struct QNum(pub Vec<Qid>);
 
 impl QNum {
