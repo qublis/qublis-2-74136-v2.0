@@ -10,6 +10,7 @@
 
 use crate::{qnum::QNum, qid::Qid};
 use num_complex::Complex;
+use ordered_float::OrderedFloat;
 use std::cmp;
 use std::collections::HashMap;
 
@@ -111,7 +112,9 @@ fn enumerate_states(q: &QNum, out_len: usize) -> Vec<(Vec<u8>, Complex<f64>)> {
                 if p > 0.0 {
                     let mut new_prefix = prefix.clone();
                     new_prefix.push(digit as u8);
-                    next.push((new_prefix, *amp * *alpha));
+                    // Convert alpha (Complex<OrderedFloat<f64>>) to Complex<f64> for multiplication
+                    let alpha_f64 = Complex::new(alpha.re.into_inner(), alpha.im.into_inner());
+                    next.push((new_prefix, *amp * alpha_f64));
                 }
             }
         }
