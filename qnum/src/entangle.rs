@@ -26,7 +26,7 @@ pub fn entangle(a: &mut QNum, b: &mut QNum) {
         b.len(),
         "Entanglement requires QNums of the same length"
     );
-    let inv_sqrt2 = Complex::new(1.0 / 2f64.sqrt(), 0.0);
+    let inv_sqrt2 = Complex::new(OrderedFloat(1.0 / 2f64.sqrt()), OrderedFloat(0.0));
 
     for (qa, qb) in a.0.iter_mut().zip(b.0.iter_mut()) {
         let mut new_qa = [Complex::new(OrderedFloat(0.0), OrderedFloat(0.0)); 10];
@@ -35,15 +35,9 @@ pub fn entangle(a: &mut QNum, b: &mut QNum) {
         for i in 0..10 {
             let α = qa.amps[i];
             let β = qb.amps[i];
-            // Bell‐type mixing per basis index
-            let alpha_f = Complex::new(α.re.into_inner(), α.im.into_inner());
-            let beta_f  = Complex::new(β.re.into_inner(), β.im.into_inner());
-
-            let qa_new = (alpha_f + beta_f) * inv_sqrt2;
-            let qb_new = (alpha_f - beta_f) * inv_sqrt2;
-
-            new_qa[i] = Complex::new(OrderedFloat(qa_new.re), OrderedFloat(qa_new.im));
-            new_qb[i] = Complex::new(OrderedFloat(qb_new.re), OrderedFloat(qb_new.im));
+            // Bell‐type mixing per basis index, all in Complex<OrderedFloat<f64>>
+            new_qa[i] = (α + β) * inv_sqrt2;
+            new_qb[i] = (α - β) * inv_sqrt2;
         }
 
         qa.amps = new_qa;
