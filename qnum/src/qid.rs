@@ -101,7 +101,7 @@ impl Qid {
     pub fn entropy(&self) -> f64 {
         self.amps.iter().fold(0.0, |acc, c| {
             let p = c.norm_sqr();
-            if p > 0.0 {
+            if p > OrderedFloat(0.0) {
                 acc - p * p.ln()
             } else {
                 acc
