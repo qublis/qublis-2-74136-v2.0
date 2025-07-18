@@ -15,11 +15,13 @@ name = "qublis_qnum"
 path = "src/lib.rs"
 
 [dependencies]
-# Complex‐number support for amplitudes, with serde support
-num-complex = { version = "0.4", features = ["serde"] }
+# Wrap f64 in a Hash+Eq newtype for amplitudes
+ordered-float = { version = "3.0", features = ["serde"] }
+# Complex‐number support for amplitudes
+num-complex = "0.4"
 # Random state initialization, e.g. for Haar‐uniform Qid
 rand = { version = "0.8", features = ["std"] }
-# Serialization support
+# Serialization support for QNum/Qid
 serde = { version = "1.0", features = ["derive"] }
 
 [features]
