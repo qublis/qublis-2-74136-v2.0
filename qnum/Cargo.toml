@@ -17,8 +17,8 @@ path = "src/lib.rs"
 [dependencies]
 # Wrap f64 in a Hash+Eq newtype for amplitudes
 ordered-float = { version = "3.0", features = ["serde"] }
-# Complex‐number support for amplitudes
-num-complex = "0.4"
+# Complex‐number support for amplitudes, with serde
+num-complex = { version = "0.4", features = ["serde"] }
 # Random state initialization, e.g. for Haar‐uniform Qid
 rand = { version = "0.8", features = ["std"] }
 # Serialization support for QNum/Qid
