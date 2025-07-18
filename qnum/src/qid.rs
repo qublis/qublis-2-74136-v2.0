@@ -102,7 +102,7 @@ impl Qid {
         self.amps.iter().fold(0.0, |acc, c| {
             let p = c.norm_sqr();
             if p > OrderedFloat(0.0) {
-                acc - p * p.ln()
+                acc - (p * p.ln()).0
             } else {
                 acc
             }
