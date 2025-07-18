@@ -2,8 +2,10 @@
 //!
 //! A `Qid` is a quantum “digit” in superposition over the basis |0⟩…|9⟩,
 //! with methods for normalization, measurement (collapse), and entropy.
+//! Uses OrderedFloat to allow deriving Hash/Eq/PartialEq.
 
 use num_complex::Complex;
+use ordered_float::OrderedFloat;
 use rand::distributions::{Distribution, WeightedIndex};
 use rand::Rng;
 use serde::{Serialize, Deserialize};
@@ -12,22 +14,33 @@ use serde::{Serialize, Deserialize};
 #[derive(Clone, Debug, Hash, Eq, PartialEq, Serialize, Deserialize)]
 pub struct Qid {
     /// Complex amplitudes α₀…α₉, normalized so that ∑|αᵢ|² = 1.
-    pub amps: [Complex<f64>; 10],
+    pub amps: [Complex<OrderedFloat<f64>>; 10],
 }
 
 impl Qid {
     /// Create a new `Qid` from raw amplitudes, normalizing them.
     pub fn new(mut amps: [Complex<f64>; 10]) -> Self {
-        let mut q = Qid { amps };
+        // Convert to Complex<OrderedFloat<f64>>
+        let mut wrapped: [Complex<OrderedFloat<f64>>; 10] = amps.map(|c| Complex {
+            re: OrderedFloat(c.re),
+            im: OrderedFloat(c.im),
+        });
+        let mut q = Qid { amps: wrapped };
         q.normalize();
         q
     }
 
     /// Construct a classical `Qid` collapsed to digit `d` (0 ≤ d < 10).
     pub fn from_classical(d: u8) -> Self {
-        let mut amps = [Complex::new(0.0, 0.0); 10];
+        let mut amps = [Complex {
+            re: OrderedFloat(0.0),
+            im: OrderedFloat(0.0),
+        }; 10];
         if (d as usize) < 10 {
-            amps[d as usize] = Complex::new(1.0, 0.0);
+            amps[d as usize] = Complex {
+                re: OrderedFloat(1.0),
+                im: OrderedFloat(0.0),
+            };
         }
         Qid { amps }
     }
@@ -53,7 +66,8 @@ impl Qid {
         if norm_sq > 0.0 {
             let inv_norm = 1.0 / norm_sq.sqrt();
             for amp in &mut self.amps {
-                *amp *= inv_norm;
+                amp.re = OrderedFloat(amp.re.into_inner() * inv_norm);
+                amp.im = OrderedFloat(amp.im.into_inner() * inv_norm);
             }
         }
     }
@@ -71,11 +85,13 @@ impl Qid {
 
         // Collapse
         for (i, amp) in self.amps.iter_mut().enumerate() {
-            *amp = if i == idx {
-                Complex::new(1.0, 0.0)
+            if i == idx {
+                amp.re = OrderedFloat(1.0);
+                amp.im = OrderedFloat(0.0);
             } else {
-                Complex::new(0.0, 0.0)
-            };
+                amp.re = OrderedFloat(0.0);
+                amp.im = OrderedFloat(0.0);
+            }
         }
         idx as u8
     }
@@ -91,6 +107,13 @@ impl Qid {
                 acc
             }
         })
+    }
+}
+
+impl Complex<OrderedFloat<f64>> {
+    /// Return the squared norm |z|^2 for Complex<OrderedFloat<f64>> as f64.
+    fn norm_sqr(&self) -> f64 {
+        self.re.into_inner() * self.re.into_inner() + self.im.into_inner() * self.im.into_inner()
     }
 }
 
@@ -117,7 +140,7 @@ mod tests {
     #[test]
     fn normalize_preserves_state() {
         let mut amps = [Complex::new(1.0, 0.0); 10];
-        let mut q = Qid { amps };
+        let mut q = Qid::new(amps);
         q.normalize();
         let norm_sq: f64 = q.amps.iter().map(|c| c.norm_sqr()).sum();
         assert!((norm_sq - 1.0).abs() < 1e-12);
