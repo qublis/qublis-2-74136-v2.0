@@ -15,48 +15,25 @@ name = "qublis_qnet"
 path = "src/lib.rs"
 
 [dependencies]
-# Quantum Number System integration
 qublis-qnum = { workspace = true, optional = true }
-
-# Serialization / configuration
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"         
-
-# Logging facade
 log = "0.4"
-
-# Error types
 thiserror = "1.0"
-
-# Asynchronous runtime (for relay, teleport servers)
 tokio = { version = "1.28", features = ["net", "sync", "time"] }
-
-# HashMap / HashSet
 hashbrown = "0.12"
-
-# --- Added for your errors ---
 futures = "0.3"
 num-complex = "0.4"        
 toml = "0.8"
-# --- End added ---
 
 [features]
-# Default enables QNum support only
 default = ["qnum"]
-
-# Enable QNS integration (QNum-based routing probabilities)
 qnum = ["qublis-qnum"]
-
-# Enable Teleportation overlay (requires `teleport_core.rs`)
 teleport = []
-
-# Enable collection of routing metrics
 metrics = []
 
 [dev-dependencies]
 criterion = { version = "0.3" }
-# If serde_json is only used in tests/benches, you can keep it here and remove from above
 
 [package.metadata]
-# Proprietary workspace packages are not published to crates.io
 publish = false
