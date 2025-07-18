@@ -8,7 +8,7 @@ use rand::distributions::{Distribution, WeightedIndex};
 use rand::Rng;
 
 /// A single quantum digit with amplitude vector over 10 basis states.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Hash, Eq, PartialEq)]
 pub struct Qid {
     /// Complex amplitudes α₀…α₉, normalized so that ∑|αᵢ|² = 1.
     pub amps: [Complex<f64>; 10],
