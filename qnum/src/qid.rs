@@ -6,9 +6,10 @@
 use num_complex::Complex;
 use rand::distributions::{Distribution, WeightedIndex};
 use rand::Rng;
+use serde::{Serialize, Deserialize};
 
 /// A single quantum digit with amplitude vector over 10 basis states.
-#[derive(Clone, Debug, Hash, Eq, PartialEq)]
+#[derive(Clone, Debug, Hash, Eq, PartialEq, Serialize, Deserialize)]
 pub struct Qid {
     /// Complex amplitudes α₀…α₉, normalized so that ∑|αᵢ|² = 1.
     pub amps: [Complex<f64>; 10],
