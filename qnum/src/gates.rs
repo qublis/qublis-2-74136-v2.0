@@ -109,7 +109,7 @@ fn enumerate_states(q: &QNum, out_len: usize) -> Vec<(Vec<u8>, Complex<f64>)> {
         for (prefix, amp) in &states {
             for (digit, alpha) in qid.amps.iter().enumerate() {
                 let p = alpha.norm_sqr();
-                if p > 0.0 {
+                if p > OrderedFloat(0.0) {
                     let mut new_prefix = prefix.clone();
                     new_prefix.push(digit as u8);
                     // Convert alpha (Complex<OrderedFloat<f64>>) to Complex<f64> for multiplication
