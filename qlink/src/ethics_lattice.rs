@@ -51,16 +51,24 @@ impl EthicsLattice {
 
     /// Entangle two existing principles by name.
     /// Returns an error if either principle is missing.
+    ///
+    /// This avoids double mutable borrow of self.nodes by temporarily removing one QNum,
+    /// performing entanglement, then reinserting.
     pub fn entangle_principles(&mut self, a: &Principle, b: &Principle) -> Result<(), QLinkError> {
-        let qa = self
+        if a == b {
+            return Err(QLinkError::PrincipleNotFound(a.clone()));
+        }
+        // Remove one, get &mut to the other, entangle, then reinsert.
+        let mut qa = self
             .nodes
-            .get_mut(a)
+            .remove(a)
             .ok_or_else(|| QLinkError::PrincipleNotFound(a.clone()))?;
         let qb = self
             .nodes
             .get_mut(b)
             .ok_or_else(|| QLinkError::PrincipleNotFound(b.clone()))?;
-        entangle(qa, qb);
+        entangle(&mut qa, qb);
+        self.nodes.insert(a.clone(), qa);
         self.metrics.inc_counter("principles_entangled", 1);
         Ok(())
     }
