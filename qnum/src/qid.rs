@@ -62,7 +62,7 @@ impl Qid {
 
     /// Normalize the amplitude vector so that ∑|αᵢ|² = 1.
     pub fn normalize(&mut self) {
-        let norm_sq: f64 = self.amps.iter().map(|c| c.norm_sqr()).sum();
+        let norm_sq: f64 = self.amps.iter().map(|c| c.norm_sqr().0).sum();
         if norm_sq > 0.0 {
             let inv_norm = 1.0 / norm_sq.sqrt();
             for amp in &mut self.amps {
