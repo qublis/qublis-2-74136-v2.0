@@ -70,7 +70,7 @@ impl Relay {
             tc.teleport(src, dst, &path, packet)
                 .await
                 .map_err(QNetError::from)?;
-            self.metrics.record_teleport();
+            self.metrics.record_teleport_success();
         } else {
             // Forward along each hop
             // we clone packet for each hop; in real usage you'd stream or consume
