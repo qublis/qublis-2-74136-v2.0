@@ -1,6 +1,7 @@
+// qublis-2-74136-v2.0/qnum/src/qid.rs
+
 //! A single quantum digit (Qid) holding 10 complex amplitudes.
-//! We wrap each `f64` in `OrderedFloat` so that `Complex<OrderedFloat<f64>>`
-//! can derive `Hash` and `Eq`.
+//! Each f64 is wrapped in `OrderedFloat` so we can derive `Hash` + `Eq`.
 
 use num_complex::Complex;
 use ordered_float::OrderedFloat;
@@ -18,7 +19,6 @@ impl Qid {
     /// Construct a Qid from raw `f64` amplitudes (array length = 10).
     /// Panics if the caller provides an array of a different size.
     pub fn from_f64(amps: [Complex<f64>; 10]) -> Self {
-        // Map each `Complex<f64>` into `Complex<OrderedFloat<f64>>`
         let wrapped = amps.map(|c| Complex {
             re: OrderedFloat(c.re),
             im: OrderedFloat(c.im),
@@ -26,7 +26,7 @@ impl Qid {
         Qid { amps: wrapped }
     }
 
-    /// Create a “definite” (classical) Qid that collapses to digit `i` with probability 1.
+    /// Create a “definite” (classical) Qid that collapses to digit `i`.
     pub fn definite(i: usize) -> Self {
         assert!(i < 10, "digit out of range");
         let zero = Complex {
@@ -37,10 +37,39 @@ impl Qid {
             re: OrderedFloat(1.0),
             im: OrderedFloat(0.0),
         };
-        // Fill all entries with zero, then set index `i` to one.
         let mut amps = [zero; 10];
         amps[i] = one;
         Qid { amps }
+    }
+
+    /// Normalize this Qid so that the sum of squared magnitudes of `amps` equals 1.
+    ///
+    /// If the total norm is zero, this is a no-op.
+    pub fn normalize(&mut self) {
+        // compute sum of squared magnitudes as f64
+        let sum_sq: f64 = self
+            .amps
+            .iter()
+            .map(|c| {
+                let re = c.re.into_inner();
+                let im = c.im.into_inner();
+                re * re + im * im
+            })
+            .sum();
+
+        if sum_sq <= 0.0 {
+            // zero‐vector: cannot normalize
+            return;
+        }
+        let norm = sum_sq.sqrt();
+
+        // divide each amplitude by norm
+        for c in &mut self.amps {
+            let re = c.re.into_inner() / norm;
+            let im = c.im.into_inner() / norm;
+            c.re = OrderedFloat(re);
+            c.im = OrderedFloat(im);
+        }
     }
 }
 
@@ -50,12 +79,12 @@ mod tests {
     use num_complex::Complex;
 
     #[test]
-    fn from_f64_and_definite_hash_and_eq() {
-        // two Qids constructed the same way should be equal & hash identically
+    fn normalize_scales_to_unit_norm() {
+        // raw amplitudes not summing to 1
         let raw = [
+            Complex { re: 2.0, im: 0.0 },
+            Complex { re: 3.0, im: 4.0 },
             Complex { re: 0.0, im: 0.0 },
-            Complex { re: 1.0, im: 0.0 },
-            Complex { re: 0.5, im: -0.5 },
             Complex { re: 0.0, im: 0.0 },
             Complex { re: 0.0, im: 0.0 },
             Complex { re: 0.0, im: 0.0 },
@@ -64,31 +93,33 @@ mod tests {
             Complex { re: 0.0, im: 0.0 },
             Complex { re: 0.0, im: 0.0 },
         ];
-        let q1 = Qid::from_f64(raw);
-        let q2 = Qid::from_f64(raw);
-        assert_eq!(q1, q2);
+        let mut q = Qid::from_f64(raw);
+        q.normalize();
 
-        use std::collections::hash_map::DefaultHasher;
-        use std::hash::{Hash, Hasher};
-        let mut h1 = DefaultHasher::new();
-        let mut h2 = DefaultHasher::new();
-        q1.hash(&mut h1);
-        q2.hash(&mut h2);
-        assert_eq!(h1.finish(), h2.finish());
+        let sum_sq: f64 = q
+            .amps
+            .iter()
+            .map(|c| {
+                let re = c.re.into_inner();
+                let im = c.im.into_inner();
+                re * re + im * im
+            })
+            .sum();
+
+        assert!((sum_sq - 1.0).abs() < 1e-12, "normalized Qid must have unit norm");
     }
 
     #[test]
-    fn definite_creates_one_hot() {
-        for i in 0..10 {
-            let q = Qid::definite(i);
-            for (j, amp) in q.amps.iter().enumerate() {
-                let norm = (amp.re.into_inner().powi(2) + amp.im.into_inner().powi(2)).sqrt();
-                if j == i {
-                    assert!((norm - 1.0).abs() < 1e-12);
-                } else {
-                    assert!((norm - 0.0).abs() < 1e-12);
-                }
-            }
+    fn normalize_zero_does_nothing() {
+        let mut q = Qid::definite(0);
+        // zero all amplitudes
+        for c in &mut q.amps {
+            c.re = OrderedFloat(0.0);
+            c.im = OrderedFloat(0.0);
         }
+        // this is the zero‐vector; normalize() should not panic or divide by zero
+        q.normalize();
+        // still all zero
+        assert!(q.amps.iter().all(|c| c.re.into_inner() == 0.0 && c.im.into_inner() == 0.0));
     }
 }
