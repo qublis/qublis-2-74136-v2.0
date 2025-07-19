@@ -13,6 +13,12 @@ use crate::{
 };
 use futures::future::try_join_all;
 
+#[cfg(not(test))]
+use crate::transport;
+
+#[cfg(test)]
+use super::tests::dummy_transport as transport;
+
 /// Packet relay engine.
 #[derive(Clone)]
 pub struct Relay {
@@ -75,7 +81,7 @@ impl Relay {
                 let pkt = packet.clone();
                 tasks.push(tokio::spawn(async move {
                     // send_direct is a placeholder for your transport layer
-                    crate::transport::send_direct(&from, &to, pkt)
+                    transport::send_direct(&from, &to, pkt)
                         .await
                         .map_err(|e| QNetError::SendError(e.to_string()))
                 }));
@@ -102,7 +108,7 @@ mod tests {
     use crate::types::Packet;
 
     /// A dummy transport implementation for tests.
-    mod dummy_transport {
+    pub mod dummy_transport {
         use super::{NodeId, Packet};
         use std::sync::Mutex;
         lazy_static::lazy_static! {
@@ -117,10 +123,6 @@ mod tests {
             Ok(())
         }
     }
-
-    // Override the real transport for tests
-    #[allow(unused_imports)]
-    use dummy_transport as transport;
 
     #[tokio::test]
     async fn test_relay_hop_by_hop() {
