@@ -6,6 +6,7 @@
 use std::collections::HashMap;
 use std::time::{Instant, SystemTime};
 use serde::Serialize;
+use serde_json; // <-- ADD THIS LINE
 
 /// A timestamped snapshot of counters and gauges.
 #[derive(Debug, Clone, Serialize)]
