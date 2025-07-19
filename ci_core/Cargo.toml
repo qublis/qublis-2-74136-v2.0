@@ -35,6 +35,10 @@ thiserror = "1.0"
 # Logging
 log = "0.4"
 
+# Add these for morphic_ai.rs and quantum math
+num-complex = "0.4"
+ordered-float = "3"
+
 [features]
 # Default includes QNum and QLink integration
 default = ["qnum", "qlink"]
