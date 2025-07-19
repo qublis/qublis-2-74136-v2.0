@@ -29,7 +29,7 @@ mod transport {
     }
 }
 
-// NOTE: Do NOT add `use self::transport;` or similar! The module is in scope as `transport::` already.
+// Don't add `use self::transport;` -- it's accessible as `transport::` already.
 
 #[cfg(test)]
 use super::tests::transport;
