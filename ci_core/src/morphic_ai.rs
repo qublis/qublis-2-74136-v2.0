@@ -14,6 +14,10 @@ use crate::config::CiCoreConfig;
 use crate::error::CiCoreError;
 use crate::metrics::CiCoreMetrics;
 use crate::types::{NeuralState, SensoryInput, MotorOutput};
+// Add these imports for amplitude math
+use num_complex::Complex;
+use ordered_float::OrderedFloat;
+
 
 /// MorphicAI holds the current neural state and configuration.
 #[derive(Debug, Clone)]
@@ -80,15 +84,9 @@ impl MorphicAI {
             for qid in &mut neuron.0 {
                 for amp in qid.amps.iter_mut() {
                     // amp: num_complex::Complex<ordered_float::OrderedFloat<f64>>
-                    // We must multiply amp by the same type, so cast scalar to Complex<OrderedFloat<f64>>
-                    // If not imported already:
-                    // use num_complex::Complex;
-                    // use ordered_float::OrderedFloat;
-
-                    // Create a Complex<OrderedFloat<f64>> from f64
-                    let scalar = num_complex::Complex {
-                        re: ordered_float::OrderedFloat(1.0 + lr),
-                        im: ordered_float::OrderedFloat(0.0),
+                    let scalar = Complex {
+                        re: OrderedFloat(1.0 + lr),
+                        im: OrderedFloat(0.0),
                     };
                     *amp = *amp * scalar;
                 }
