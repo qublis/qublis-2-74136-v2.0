@@ -28,8 +28,9 @@ mod transport {
         Ok(())
     }
 }
+
 #[cfg(not(test))]
-use transport as transport;
+use self::transport;
 
 #[cfg(test)]
 use super::tests::transport;
