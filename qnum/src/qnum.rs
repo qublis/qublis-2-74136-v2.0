@@ -18,14 +18,14 @@ impl QNum {
     pub fn from_digits(digits: &[u8]) -> Self {
         let qids = digits
             .iter()
-            .map(|&d| Qid::from_classical(d))
+            .map(|&d| Qid::definite(d as usize))
             .collect();
         QNum(qids)
     }
 
     /// Construct the zero `QNum` with `len` digits (all set to |0⟩).
     pub fn zero(len: usize) -> Self {
-        QNum(vec![Qid::zero(); len])
+        QNum(vec![Qid::definite(0); len])
     }
 
     /// Build a superposed `QNum` from a list of (digit‐vector, amplitude) pairs.
@@ -54,7 +54,7 @@ impl QNum {
         // normalize and build Qids
         let qids = raw
             .into_iter()
-            .map(|amps| Qid::new(amps))
+            .map(|amps| Qid::from_f64(amps))
             .collect();
 
         QNum(qids)
@@ -62,7 +62,7 @@ impl QNum {
 
     /// Measure (collapse) each `Qid` in place, returning a classical digit vector.
     pub fn measure(&mut self) -> Vec<u8> {
-        self.0.iter_mut().map(|qid| qid.measure()).collect()
+        self.0.iter_mut().map(|qid| qid.measure() as u8).collect()
     }
 
     /// Compute the joint entropy of the `QNum` = sum of individual digit entropies.
