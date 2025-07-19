@@ -29,9 +29,7 @@ mod transport {
         Ok(())
     }
 }
-
-#[cfg(not(test))]
-use self::transport;
+// No `use self::transport;` needed here!
 
 /// Packet relay engine.
 #[derive(Clone)]
