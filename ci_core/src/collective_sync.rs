@@ -64,15 +64,19 @@ impl CollectiveSync {
         to: &AgentId,
         msg: SyncMessage,
     ) -> Result<(), CiCoreError> {
-        let sender = self.agents.get(from)
-            .ok_or_else(|| CiCoreError::SyncError(format!("unknown agent {}", from)))?;
+        // Workaround borrow checker: collect sender.state.clone() before mut borrow
+        let sender_state = {
+            let sender = self.agents.get(from)
+                .ok_or_else(|| CiCoreError::SyncError(format!("unknown agent {}", from)))?;
+            sender.state.clone()
+        };
         let recipient = self.agents.get_mut(to)
             .ok_or_else(|| CiCoreError::SyncError(format!("unknown agent {}", to)))?;
         // entangle recipient with message state (and optionally sender)
         entangle(&mut recipient.state, &mut msg.state.clone());
         if self.config.enable_global_entangle {
             // also entangle with sender state for tighter sync
-            entangle(&mut recipient.state, &mut sender.state.clone());
+            entangle(&mut recipient.state, &mut sender_state.clone());
         }
         self.metrics.inc_counter("messages_sent", 1);
         Ok(())
