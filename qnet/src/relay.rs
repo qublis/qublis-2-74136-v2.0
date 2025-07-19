@@ -13,11 +13,30 @@ use crate::{
 };
 use futures::future::try_join_all;
 
-#[cfg(not(test))]
-use crate::transport;
+// Remove this import since crate::transport does not exist
+// #[cfg(not(test))]
+// use crate::transport;
 
 #[cfg(test)]
 use super::tests::dummy_transport as transport;
+
+// For production, define a stub or trait for transport.
+// For now, define a module for the relay to use. In real code, move to its own file.
+#[cfg(not(test))]
+mod transport {
+    use super::{NodeId, Packet, QNetError};
+    pub async fn send_direct(
+        _from: &NodeId,
+        _to: &NodeId,
+        _packet: Packet,
+    ) -> Result<(), String> {
+        // In production, implement real transport logic here.
+        // For now, just Ok(()).
+        Ok(())
+    }
+}
+#[cfg(not(test))]
+use transport as transport;
 
 /// Packet relay engine.
 #[derive(Clone)]
