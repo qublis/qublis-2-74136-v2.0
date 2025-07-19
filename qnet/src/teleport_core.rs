@@ -14,6 +14,12 @@ use crate::{
 };
 use futures::future::try_join_all;
 
+// --- Fixed transport import for main and test ---
+#[cfg(not(test))]
+use crate::transport;
+#[cfg(test)]
+use super::tests::transport;
+
 /// Result type for teleport operations.
 pub type TeleportResult = Result<(), QNetError>;
 
@@ -79,7 +85,7 @@ impl TeleportCore {
             let to = window[1].clone();
             let pkt = packet.clone();
             tasks.push(tokio::spawn(async move {
-                crate::transport::send_direct(&from, &to, pkt)
+                transport::send_direct(&from, &to, pkt)
                     .await
                     .map_err(|e| QNetError::SendError(e.to_string()))
             }));
@@ -120,7 +126,7 @@ mod tests {
 
     // Stub the real transport to use our LOG
     #[allow(unused_imports)]
-    mod transport {
+    pub mod transport {
         use super::{LOG, NodeId, Packet};
         pub async fn send_direct(
             from: &NodeId,
