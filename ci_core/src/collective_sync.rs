@@ -108,21 +108,24 @@ impl CollectiveSync {
             }
             self.metrics.inc_counter("global_averages", 1);
         } else {
-            // entangle each pair, avoiding double mutable borrow
+            // entangle each pair (clone, entangle, write back)
             let ids: Vec<AgentId> = self.agents.keys().cloned().collect();
             for i in 0..ids.len() {
                 for j in (i+1)..ids.len() {
                     let ai = &ids[i];
                     let aj = &ids[j];
-                    // Scope the mutable borrows: split at j
-                    let (left, right) = if i < j {
-                        let (left, right) = self.agents.split_at_mut(aj);
-                        (left.get_mut(ai).unwrap(), right.get_mut(aj).unwrap())
-                    } else {
-                        let (left, right) = self.agents.split_at_mut(ai);
-                        (right.get_mut(ai).unwrap(), left.get_mut(aj).unwrap())
-                    };
-                    entangle(&mut left.state, &mut right.state);
+
+                    // Clone current states
+                    let state_i = self.agents.get(ai).unwrap().state.clone();
+                    let state_j = self.agents.get(aj).unwrap().state.clone();
+
+                    // Entangle clones
+                    let (mut entangled_i, mut entangled_j) = (state_i, state_j);
+                    entangle(&mut entangled_i, &mut entangled_j);
+
+                    // Write back
+                    self.agents.get_mut(ai).unwrap().state = entangled_i;
+                    self.agents.get_mut(aj).unwrap().state = entangled_j;
                 }
             }
             self.metrics.inc_counter("global_entanglements", 1);
