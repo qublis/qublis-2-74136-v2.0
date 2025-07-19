@@ -115,6 +115,20 @@ impl Qid {
 
         measured
     }
+
+    /// Compute the entropy of this Qid's probability distribution.
+    pub fn entropy(&self) -> f64 {
+        self.amps.iter()
+            .map(|c| {
+                let p = c.norm_sqr().into_inner();
+                if p > 0.0 {
+                    -p * p.ln()
+                } else {
+                    0.0
+                }
+            })
+            .sum()
+    }
 }
 
 #[cfg(test)]
@@ -180,5 +194,22 @@ mod tests {
                 c.re.into_inner().abs() < 1e-12 && c.im.into_inner().abs() < 1e-12
             }
         }));
+    }
+
+    #[test]
+    fn entropy_classical_is_zero() {
+        let q = Qid::definite(7);
+        assert!((q.entropy() - 0.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn entropy_superposed_is_ln2() {
+        // superposition over two digits
+        let mut raw = [Complex { re: 0.0, im: 0.0 }; 10];
+        raw[0] = Complex { re: (0.5f64).sqrt(), im: 0.0 };
+        raw[1] = Complex { re: (0.5f64).sqrt(), im: 0.0 };
+        let q = Qid::from_f64(raw);
+        let expected = (2.0f64).ln();
+        assert!((q.entropy() - expected).abs() < 1e-12);
     }
 }
