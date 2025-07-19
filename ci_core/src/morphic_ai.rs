@@ -79,7 +79,18 @@ impl MorphicAI {
             // For each amplitude α: α → α * (1 + lr)
             for qid in &mut neuron.0 {
                 for amp in qid.amps.iter_mut() {
-                    *amp *= 1.0 + lr;
+                    // amp: num_complex::Complex<ordered_float::OrderedFloat<f64>>
+                    // We must multiply amp by the same type, so cast scalar to Complex<OrderedFloat<f64>>
+                    // If not imported already:
+                    // use num_complex::Complex;
+                    // use ordered_float::OrderedFloat;
+
+                    // Create a Complex<OrderedFloat<f64>> from f64
+                    let scalar = num_complex::Complex {
+                        re: ordered_float::OrderedFloat(1.0 + lr),
+                        im: ordered_float::OrderedFloat(0.0),
+                    };
+                    *amp = *amp * scalar;
                 }
                 qid.normalize();
             }
