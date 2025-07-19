@@ -74,7 +74,7 @@ impl TeleportCore {
     /// - If an override hook is set, invokes it directly.
     /// - Otherwise, simulates teleport as rapid hop-by-hop sends.
     pub async fn teleport(
-        &self,
+        &mut self,
         src: &NodeId,
         dst: &NodeId,
         path: &[NodeId],
@@ -156,7 +156,7 @@ mod tests {
     #[tokio::test]
     async fn test_teleport_default_hop_by_hop() {
         let mut cfg = QNetConfig::default();
-        let tc = TeleportCore::new(&cfg);
+        let mut tc = TeleportCore::new(&cfg);
         let path = vec!["A".into(), "B".into(), "C".into()];
         let packet = Packet::from(vec![1, 2, 3]);
 
