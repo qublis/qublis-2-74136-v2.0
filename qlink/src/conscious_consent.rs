@@ -57,7 +57,7 @@ impl ConsciousConsent {
         let p = self.config.consent_probability;
         let amp_yes = (p).sqrt();
         let amp_no = (1.0 - p).sqrt();
-        let mut super_qid = Qid::new([
+        let mut super_qid = Qid::from_f64([
             num_complex::Complex::new(amp_no, 0.0), // |0⟩: denial
             num_complex::Complex::new(amp_yes, 0.0), // |1⟩: consent
             // rest of basis unused
