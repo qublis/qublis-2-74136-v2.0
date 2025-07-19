@@ -77,10 +77,12 @@ impl MorphicAI {
         let lr = self.config.learning_rate * reward;
         for neuron in &mut self.state.0 {
             // For each amplitude α: α → α * (1 + lr)
-            for amp in neuron.0.iter_mut() {
-                *amp *= 1.0 + lr;
+            for qid in &mut neuron.0 {
+                for amp in qid.amps.iter_mut() {
+                    *amp *= 1.0 + lr;
+                }
+                qid.normalize();
             }
-            neuron.normalize();
         }
         self.metrics.inc_counter("morphic_ai_trains", 1);
     }
@@ -159,8 +161,10 @@ mod tests {
         ai.train(1.0); // reward = 1
         // After training, normalization preserves entropy but amplitudes changed
         for neuron in &ai.state.0 {
-            let norm_sq: f64 = neuron.0.iter().map(|c| c.norm_sqr()).sum();
-            assert!((norm_sq - 1.0).abs() < 1e-12);
+            for qid in &neuron.0 {
+                let norm_sq: f64 = qid.amps.iter().map(|c| c.norm_sqr()).sum();
+                assert!((norm_sq - 1.0).abs() < 1e-12);
+            }
         }
     }
 }
